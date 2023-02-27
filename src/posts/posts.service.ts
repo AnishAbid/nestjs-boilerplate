@@ -1,7 +1,9 @@
-import {Injectable, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
+import {Inject, Injectable, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
 import { PostModel } from './posts.interface';
+import {Model} from "mongoose";
 @Injectable()
 export class PostsService {
+    constructor(@Inject('POST_MODEL') private readonly postModel: Model<PostModel>) {}
     private posts: Array<PostModel> = [];
     private logger: any;
     public findAll(): Array<PostModel> {
@@ -16,9 +18,11 @@ export class PostsService {
 
         return post;
     }
-    public create(post: PostModel): PostModel {
+    async create(post: PostModel): Promise<PostModel> {
+        const createdPost = this.postModel.create(post);
+        return createdPost;
         // if the title is already in use by another post
-        const titleExists: boolean = this.posts.some(
+        /*const titleExists: boolean = this.posts.some(
             (item) => item.title === post.title,
         );
         if (titleExists) {
@@ -36,7 +40,7 @@ export class PostsService {
 
         this.posts.push(blogPost);
 
-        return blogPost;
+        return blogPost;*/
     }
     public delete(id: number): void {
         const index: number = this.posts.findIndex(post => post.id === id);
@@ -66,13 +70,11 @@ export class PostsService {
             throw new UnprocessableEntityException('Post title already exists.');
         }
 
-        const blogPost: PostModel = {
-            ...post,
-            id,
-        };
 
-        this.posts[index] = blogPost;
+        post.id = id
 
-        return blogPost;
+        this.posts[index] = post;
+
+        return post;
     }
 }

@@ -1,5 +1,5 @@
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
-
+import { Document } from 'mongoose';
 /*export interface PostModel {
     id?: number;
     date: Date;
@@ -7,7 +7,7 @@ import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
     body: string;
     category: string;
 }*/
-export class PostModel {
+export class PostModel extends Document {
     @ApiPropertyOptional({ type: Number })
     id?: number;
     @ApiProperty({ type: String, format: 'date-time' })

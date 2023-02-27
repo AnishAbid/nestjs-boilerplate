@@ -27,7 +27,7 @@ export class PostsController {
     @Post()
     @ApiCreatedResponse({ description: 'Post created successfully.' })
     @ApiUnprocessableEntityResponse({ description: 'Post title already exists.' })
-    public create(@Body() post: PostModel): PostModel {
+    async create(@Body() post: PostModel) {
         return this.postsService.create(post);
     }
     @Delete(':id')
