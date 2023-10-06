@@ -21,7 +21,7 @@ export class SignUpObj {
     profile_image?: Object;
 
     @ApiPropertyOptional({type: Date})
-    Dob?: Date;
+    dob?: Date;
     
     @ApiPropertyOptional({type: String})
     gender?: String

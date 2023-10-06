@@ -17,15 +17,15 @@ export class AuthController {
         }
 
     @Post('signup')
-    @ApiCreatedResponse({ description: 'User created successfully.' })
-    @ApiUnprocessableEntityResponse({ description: 'Post title already exists.' })
+    /* @ApiCreatedResponse({ description: 'User created successfully.' })
+    @ApiUnprocessableEntityResponse({ description: 'User already exists.' }) */
     signUp(@Body() data:SignUpObj){
         return this.authService.signup(data)
     }
     @Post('signin')
-    @ApiOkResponse({ description: 'User loggedin successfully.'})
+/*     @ApiOkResponse({ description: 'User loggedin successfully.'})
     @ApiNotFoundResponse({ description: 'User not found.' })
-    @ApiUnprocessableEntityResponse({ description: 'Somthing  went wrong' })
+    @ApiUnprocessableEntityResponse({ description: 'Somthing  went wrong' }) */
     signIn(@Body() data:SignInObj){
         return this.authService.signin(data)
     }

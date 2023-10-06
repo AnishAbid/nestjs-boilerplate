@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty,IsString } from 'class-validator';
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 
-export class UserModel {
+export class UserObject {
     @ApiPropertyOptional({ type: Number })
     id?: Number;
     @ApiPropertyOptional({ type: String })
@@ -20,8 +20,15 @@ export class UserModel {
     profile_image?: Object;
 
     @ApiPropertyOptional({type: Date})
-    Dob?: Date;
+    dob?: Date;
     
     @ApiPropertyOptional({type: String})
     gender?: String
+}
+export class GetQuery {
+@ApiPropertyOptional()
+dob?:Date
+
+@ApiPropertyOptional()
+gender: String
 }
