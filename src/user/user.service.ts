@@ -1,28 +1,62 @@
-import {Inject, Injectable, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
-import { UserModel } from './user.interface';
+import {BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
+import { UserObject, GetQuery, UpdateObject } from './user.interface';
 import {Model} from "mongoose";
 @Injectable()
 export class UserService {
-    constructor(@Inject('USER_MODEL') private readonly userModel: Model<UserModel>) {}
+    constructor(@Inject('USER_MODEL') private readonly userModel: Model<UserObject>) {}
     private logger: any;
-    async findAll(){
-
+    async findAll(query): Promise<any>{
+        try {
+            let result = await this.userModel.find(query)
+            if(!result)
+                return new NotFoundException()
+            return result 
+        } catch (error) {
+            return new InternalServerErrorException(error)
+        }
+         
     } 
-    public findOne(id: number): void {
+    async findOne(id: string): Promise<any> {
+        try {
+            let result = await this.userModel.findOne({_id:id});
+            if(!result)
+                return new NotFoundException()
+            return result 
+        } catch (error) {
+            return new InternalServerErrorException(error)
+        }
         
     }
-    async create(user: UserModel): Promise<UserModel> {
-        const createdPost = this.userModel.create(user);
-        return createdPost;
+    async  create(user: UserObject): Promise<any> {
+        try {
+            let createdPost = await this.userModel.create(user);
+            return createdPost;
+        } catch (error) {
+            if(error.code ==11000)
+                return new UnprocessableEntityException("User with same credentials already exists")
+            else
+            return new InternalServerErrorException(error)     
+        }
+        
     }
-    async delete(id: number): Promise<any> {
-        const result = this.userModel.deleteOne({id:id});
-        return result
+    async delete(id: string): Promise<any> {
+        try {
+            let result = await this.userModel.deleteOne({_id:id});
+            return result
+        } catch (error) {
+            return new InternalServerErrorException(error)
+        }
+        
     }
-    async update(id:number, data: UserModel): Promise<Omit<UserModel,"email"|"password">>{
-        this.logger.log(`Updating post with id: ${id}`);
-         const updatedUser = this.userModel.findOneAndUpdate({id:id},data);
-         return updatedUser
+    async update(id:string, data: UpdateObject): Promise<any>{
+        try {
+            //this.logger.log(`Updating post with id: ${id}`);
+            let updatedUser = await this.userModel.findOneAndUpdate({_id:id},data,{new:true});
+            return updatedUser  
+        } catch (error) {
+            return new InternalServerErrorException(error)
+        }
+        
 
     }
 }

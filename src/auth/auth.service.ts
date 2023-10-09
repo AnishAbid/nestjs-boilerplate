@@ -2,15 +2,16 @@ import {Inject, Injectable, NotFoundException, UnprocessableEntityException, Htt
 import {SignUpObj,SignInObj} from './auth.interface'
 import {Model} from "mongoose";
 import { throwError } from 'rxjs';
+import { UserService } from 'src/user/user.service';
 @Injectable({})
 export class AuthService {
-    constructor(@Inject('USER_MODEL') private readonly userModel: any){}
+    constructor(private UserService: UserService){}
     async signup(data){
-        let result = await this.userModel.create(data)
+        let result = await this.UserService.create(data)
         return result
     }
     async signin(data){
-        let result = await this.userModel.findOne({email:data.email},{password:0})
+        let result = await this.UserService.findOne(data)
         if(!result)
             throw new NotFoundException("email or password is not correct.");
         if(result.password == data.password)
