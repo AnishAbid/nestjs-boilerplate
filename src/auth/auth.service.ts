@@ -8,6 +8,7 @@ export class AuthService {
     constructor(private UserService: UserService){}
     async signup(data){
         let result = await this.UserService.create(data)
+        console.log("Recived Res User:",result)
         return result
     }
     async signin(data){

@@ -1,12 +1,19 @@
-import { IsEmail, IsNotEmpty,IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsObject, IsOptional, IsDate } from 'class-validator';
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 
 export class SignUpObj {
 
+/* 
+To Accept Partial Object
+constructor(partial:Partial<SignUpObj>){
+    Object.assign(this,partial)
+} */
     @ApiPropertyOptional({ type: String })
+    @IsString()
     first_name?: String;
 
     @ApiPropertyOptional({ type: String })
+    @IsString()
     last_name?: String;
 
     @ApiProperty({type: String})
@@ -15,15 +22,20 @@ export class SignUpObj {
 
     @ApiProperty({type: String})
     @IsNotEmpty()
+    @IsString()
     password: String;
 
     @ApiPropertyOptional({type: Object})
+    @IsOptional()
+    @IsObject()
     profile_image?: Object;
 
     @ApiPropertyOptional({type: Date})
+    @IsString()
     dob?: Date;
     
     @ApiPropertyOptional({type: String})
+    @IsString()
     gender?: String
 }
 export class SignInObj{
