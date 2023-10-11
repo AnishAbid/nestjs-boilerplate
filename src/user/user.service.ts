@@ -27,10 +27,21 @@ export class UserService {
         }
         
     }
+    async findByEmail(email): Promise<any> {
+        try {
+            let result = await this.userModel.findOne({email:email});
+            if(!result)
+                return new NotFoundException()
+            return result 
+        } catch (error) {
+            return new InternalServerErrorException(error)
+        }
+        
+    }
     async  create(user: UserObject): Promise<any> {
         try {
-            let createdPost = await this.userModel.create(user);
-            return createdPost;
+            let result = await this.userModel.create(user);
+            return result;
         } catch (error) {
             if(error.code ==11000)
                 return new UnprocessableEntityException("User with same credentials already exists")

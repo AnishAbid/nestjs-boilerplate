@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get,
+     Param, ParseIntPipe, Patch, Post,
+      Put, Query } from "@nestjs/common";
 import { identity } from "rxjs";
 import { UserService } from "./user.service";
 import {UserObject, GetQuery, UpdateObject} from "./user.interface"
@@ -9,6 +11,7 @@ import {
     ApiTags,
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
+import { Public } from "src/decorators/custom.decorator";
 
 @Controller('user')
 @ApiTags('user')

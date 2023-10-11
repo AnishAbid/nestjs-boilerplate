@@ -2,6 +2,9 @@ import { Body, Controller, Post, Req } from "@nestjs/common";
 import { Request } from "express";
 import { AuthService } from "./auth.service";
 import {SignInObj,SignUpObj} from "./auth.interface"
+import {pbkdf2} from "node:crypto"
+import {Public} from "../decorators/custom.decorator"
+
 import {
     ApiCreatedResponse,
     ApiNotFoundResponse,
@@ -15,13 +18,14 @@ import {
 export class AuthController {
     constructor(private authService:AuthService) {
         }
-
+    @Public()
     @Post('signup')
     /* @ApiCreatedResponse({ description: 'User created successfully.' })
     @ApiUnprocessableEntityResponse({ description: 'User already exists.' }) */
     signUp(@Body() data:SignUpObj){
         return this.authService.signup(data)
     }
+    @Public()
     @Post('signin')
 /*     @ApiOkResponse({ description: 'User loggedin successfully.'})
     @ApiNotFoundResponse({ description: 'User not found.' })
