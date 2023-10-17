@@ -6,8 +6,22 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import {AuthModule} from './auth/auth.module'
 import { DatabaseModule } from './database/database.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 @Module({
-  imports: [ConfigModule.forRoot({envFilePath: '.env.development',isGlobal:true}), DatabaseModule, AuthModule,PostsModule, UserModule],
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: true,
+      csrfPrevention: false,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+    ConfigModule.forRoot({envFilePath: '.env.development',isGlobal:true}),
+   DatabaseModule,
+    AuthModule,
+    PostsModule,
+     UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
