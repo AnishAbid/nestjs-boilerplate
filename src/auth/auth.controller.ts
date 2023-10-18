@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Post, Req, UseInterceptors } from "@nestjs/common";
 import { Request } from "express";
 import { AuthService } from "./auth.service";
 import {SignInObj,SignUpObj} from "./auth.interface"
@@ -12,7 +12,10 @@ import {
     ApiTags,
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
-
+/* 
+@UseInterceptors(ClassSerializerInterceptor)
+use this to overwrite/manipulate/serialize incoming or out going object.
+*/
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
@@ -25,6 +28,7 @@ export class AuthController {
     signUp(@Body() data:SignUpObj){
         return this.authService.signup(data)
     }
+    @UseInterceptors(ClassSerializerInterceptor)
     @Public()
     @Post('signin')
 /*     @ApiOkResponse({ description: 'User loggedin successfully.'})
