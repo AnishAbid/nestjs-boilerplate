@@ -9,6 +9,12 @@ import { DatabaseModule } from './database/database.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+/* 
+GraphQl config:
+playground set true to enable playgound.
+csrfPrevention set false to disable cors.
+autoSchemaFile path for auto schema file.  
+*/
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({

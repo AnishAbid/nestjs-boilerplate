@@ -12,8 +12,13 @@ export class UserResolver {
   ) {}
   @Public()
   @Query(returns => UserObject)
-  async userById(@Args('id') id: string) {
+  async getUserById(@Args('id') id: string) {
     return this.userModel.findOne({_id:id});
+  }
+  @Public()
+  @Query(returns => [UserObject])
+  async getAllUsers() {
+    return this.userModel.find();
   }
 
   /* @ResolveField()
