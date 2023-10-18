@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, IsEmpty, IsOptional } from 'class-validator';
+import { Exclude } from 'class-transformer';
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import { isDate } from 'util/types';
 import { Field, Int, ObjectType, ObjectTypeOptions } from '@nestjs/graphql';
@@ -30,6 +31,7 @@ export class UserObject {
 
     @IsString()
     @ApiProperty({type: String})
+    @Exclude()
     password: String;
     
     @Field()
@@ -43,6 +45,9 @@ export class UserObject {
     @Field()
     @ApiPropertyOptional({type: String})
     gender?: String
+    constructor(partial: Partial<UserObject>) {
+        Object.assign(this, partial);
+      }
 }
 export class GetQuery {
 @IsString()
@@ -73,36 +78,3 @@ export class UpdateObject {
     @ApiPropertyOptional({type: String})
     gender?: String
 }
-
-
-/* export class GetUserObject {
-    @Field({ nullable: false })
-    _Id?: String; 
-
-    @Field({ nullable: true })
-    @IsString()
-    @ApiPropertyOptional({ type: String })
-    first_name?: String;
-
-    @Field({ nullable: true })
-    @IsString()
-    @ApiPropertyOptional({ type: String })
-    last_name?: String;
-
-    @Field({ nullable: true })
-    @IsNotEmpty()
-    @ApiProperty({type: String})
-    email: String;
-    
-    @Field({ nullable: true })
-    @ApiPropertyOptional({type: ProfileImage}) 
-    profile_image?: ProfileImage;
-
-    @Field({ nullable: true })
-    @ApiPropertyOptional({type: Date})
-    dob?: Date;
-    
-    @Field({ nullable: true })
-    @ApiPropertyOptional({type: String})
-    gender?: String
-} */

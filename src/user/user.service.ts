@@ -7,7 +7,7 @@ export class UserService {
     private logger: any;
     async findAll(query): Promise<any>{
         try {
-            let result = await this.userModel.find(query)
+            let result = await this.userModel.find(query,{password:0})
             if(!result)
                 return new NotFoundException()
             return result 
@@ -16,12 +16,12 @@ export class UserService {
         }
          
     } 
-    async findOne(id: string): Promise<any> {
+    async findOne(id: string): Promise<UserObject | any> {
         try {
-            let result = await this.userModel.findOne({_id:id});
+            let result = await this.userModel.findOne({_id:id}).lean();
             if(!result)
                 return new NotFoundException()
-            return result 
+            return new UserObject(result)
         } catch (error) {
             return new InternalServerErrorException(error)
         }
@@ -29,7 +29,7 @@ export class UserService {
     }
     async findByEmail(email): Promise<any> {
         try {
-            let result = await this.userModel.findOne({email:email});
+            let result = await this.userModel.findOne({email:email}).lean();
             if(!result)
                 return new NotFoundException()
             return result 

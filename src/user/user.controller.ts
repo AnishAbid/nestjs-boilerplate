@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get,
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get,
      Param, ParseIntPipe, Patch, Post,
-      Put, Query } from "@nestjs/common";
+      Put, Query, UseInterceptors } from "@nestjs/common";
 import { identity } from "rxjs";
 import { UserService } from "./user.service";
 import {UserObject, GetQuery, UpdateObject} from "./user.interface"
@@ -9,12 +9,17 @@ import {
     ApiNotFoundResponse,
     ApiOkResponse,
     ApiTags,
+    ApiBearerAuth,
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
 import { Public } from "src/decorators/custom.decorator";
-
+/* 
+@UseInterceptors(ClassSerializerInterceptor)
+use this to overwrite/manipulate/serialize incoming or out going object.
+*/
 @Controller('user')
 @ApiTags('user')
+@ApiBearerAuth()
 export class UserController{
     constructor(private userService:UserService){}
 @Post('/')
@@ -25,6 +30,7 @@ return this.userService.create(data)
 getAll(@Query() query:GetQuery){
 return this.userService.findAll(query)
 }
+@UseInterceptors(ClassSerializerInterceptor)
 @Get(':id')
 getById(@Param('id') id:string){
 return this.userService.findOne(id)

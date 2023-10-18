@@ -4,6 +4,7 @@ import {Model} from "mongoose";
 import { throwError } from 'rxjs';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import {ResUser} from './auth.interface'
 import Utils from '../utils'
 
 @Injectable({})
@@ -23,9 +24,10 @@ export class AuthService {
         if(Utils.compaireHash(password,result.password))
             throw new NotFoundException("email or password is not correct.");
     const payload = { sub: result._id, email:result.email };
+    let user = new ResUser(result)
     return {
       access_token: await this.jwtService.signAsync(payload),
-      user:result
+      user
     };
     }
     
