@@ -21,7 +21,7 @@ autoSchemaFile path for auto schema file.
       driver: ApolloDriver,
       playground: true,
       csrfPrevention: false,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'src/graphQl/schema.gql'),
     }),
     ConfigModule.forRoot({envFilePath: '.env.development',isGlobal:true}),
    DatabaseModule,
