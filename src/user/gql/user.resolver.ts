@@ -1,7 +1,7 @@
-import {BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
-import { UserObject, GetQuery, UpdateObject  } from '../user.interface';
+import {BadRequestException, Body, Inject, Injectable, InternalServerErrorException, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
+import { UserObject,MutateUser} from '../user.interface';
 import {Model} from "mongoose";
-import { Field, Int, ObjectType, Resolver, Query, ResolveField, Args, Parent } from '@nestjs/graphql';
+import { Field, Int, ObjectType, Resolver, Query, ResolveField, Args, Parent, Mutation } from '@nestjs/graphql';
 import { Public } from 'src/decorators/custom.decorator';
 @Resolver(of => UserObject)
 @Injectable()
@@ -19,6 +19,11 @@ export class UserResolver {
   @Query(returns => [UserObject])
   async getAllUsers() {
     return this.userModel.find();
+  }
+  @Public()
+  @Mutation(returns => UserObject)
+  async create(@Args('UserObject') user:MutateUser) {
+    return this.userModel.create(user);
   }
 
   /* @ResolveField()

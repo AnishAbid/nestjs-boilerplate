@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsString, IsEmpty, IsOptional } from 'class-valida
 import { Exclude } from 'class-transformer';
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import { isDate } from 'util/types';
-import { Field, Int, ObjectType, ObjectTypeOptions } from '@nestjs/graphql';
+import { Field, Int, ObjectType, ObjectTypeOptions, InputType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ProfileImage {
@@ -28,9 +28,10 @@ export class UserObject {
     @IsNotEmpty()
     @ApiProperty({type: String})
     email: String;
-
+    
     @IsString()
     @ApiProperty({type: String})
+
     @Exclude()
     password: String;
     
@@ -78,3 +79,71 @@ export class UpdateObject {
     @ApiPropertyOptional({type: String})
     gender?: String
 }
+/* We have to duplicate the schema as we cannot use same schema with @ObjectType() and @InputType()
+ In some cases it throws "schema must contain uniquely named types but contains multiple types named" error.*/
+@InputType()
+export class MutateProfile {
+    @Field({ nullable: true })
+    path?: String
+    @Field({ nullable: true })
+    type?: String
+}
+@InputType()
+export class MutateUser {
+    @Field()
+    first_name?: String;
+
+    @Field()
+    last_name?: String;
+
+    @Field()
+    email: String;
+
+    @Field()
+    @Exclude()
+    password: String;
+    
+    @Field(type=>MutateProfile)
+    profile_image?:MutateProfile;
+
+    @Field()
+    dob?: Date;
+    
+    @Field()
+    gender?: String
+    constructor(partial: Partial<UserObject>) {
+        Object.assign(this, partial);
+      }
+}
+
+/* export class GetUserObject {
+    @Field({ nullable: false })
+    _Id?: String; 
+
+    @Field({ nullable: true })
+    @IsString()
+    @ApiPropertyOptional({ type: String })
+    first_name?: String;
+
+    @Field({ nullable: true })
+    @IsString()
+    @ApiPropertyOptional({ type: String })
+    last_name?: String;
+
+    @Field({ nullable: true })
+    @IsNotEmpty()
+    @ApiProperty({type: String})
+    email: String;
+    
+    @Field({ nullable: true })
+    @ApiPropertyOptional({type: ProfileImage}) 
+    profile_image?: ProfileImage;
+
+    @Field({ nullable: true })
+    @ApiPropertyOptional({type: Date})
+    dob?: Date;
+    
+    @Field({ nullable: true })
+    @ApiPropertyOptional({type: String})
+    gender?: String
+} */

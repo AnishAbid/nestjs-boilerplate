@@ -25,3 +25,22 @@ type Query {
   getUserById(id: String!): UserObject!
   getAllUsers: [UserObject!]!
 }
+
+type Mutation {
+  create(UserObject: MutateUser!): UserObject!
+}
+
+input MutateUser {
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
+  profile_image: MutateProfile!
+  dob: DateTime!
+  gender: String!
+}
+
+input MutateProfile {
+  path: String
+  type: String
+}
