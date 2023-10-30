@@ -5,6 +5,7 @@ import { PostsModule } from './posts/posts.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import {AuthModule} from './auth/auth.module'
+import {SocketModule} from './sockets/events.module'
 import { DatabaseModule } from './database/database.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -27,7 +28,8 @@ autoSchemaFile path for auto schema file.
    DatabaseModule,
     AuthModule,
     PostsModule,
-     UserModule],
+     UserModule,
+     SocketModule],
   controllers: [AppController],
   providers: [AppService],
 })
