@@ -1,5 +1,4 @@
 import { Body, ClassSerializerInterceptor, Controller, Post, Req, UseInterceptors } from "@nestjs/common";
-import { Request } from "express";
 import { AuthService } from "./auth.service";
 import {SignInObj,SignUpObj} from "./auth.interface"
 import {pbkdf2} from "node:crypto"

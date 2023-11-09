@@ -115,7 +115,57 @@ export class MutateUser {
         Object.assign(this, partial);
       }
 }
-
+export class OtpObject {
+    @ApiProperty()
+    @IsString()
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+  
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    otp: string;
+  }
+  
+  export class ResetPassword {
+    @ApiProperty()
+    @IsString()
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+  }
+  
+  export class ForgotPassword {
+    @ApiProperty()
+    @IsString()
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+  }
+  
+  export class VerificationObj {
+    @ApiProperty()
+    @IsEmail()
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+  
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+  
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    otp: string;
+  
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    query_type: string;
+  }
 /* export class GetUserObject {
     @Field({ nullable: false })
     _Id?: String; 

@@ -34,5 +34,8 @@ class Utils{
         if(hashPass === hash)return true
         else return false
     }
+    generateOtp() {
+          return Math.floor(Math.random() * 100000).toString().padStart(6, '0')
+      }
 }
 export default new Utils()

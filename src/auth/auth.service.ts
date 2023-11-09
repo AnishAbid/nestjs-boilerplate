@@ -1,11 +1,10 @@
 import {Inject, Injectable, NotFoundException, UnprocessableEntityException, HttpException,HttpStatus} from '@nestjs/common';
 import {SignUpObj,SignInObj} from './auth.interface'
-import {Model} from "mongoose";
-import { throwError } from 'rxjs';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import {ResUser} from './auth.interface'
 import Utils from '../utils'
+import Email from '../utils/emails'
 
 @Injectable({})
 export class AuthService {
@@ -14,7 +13,7 @@ export class AuthService {
         const hash = Utils.generateHash(data.password)
         data.password = hash
         let result = await this.UserService.create(data)
-        console.log("Recived Res User:",result)
+        Email.AuthEmails({email:data.email},5)
         return result
     }
     async signin({email,password}){
