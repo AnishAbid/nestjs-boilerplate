@@ -14,7 +14,7 @@ export class AuthService {
         data.password = hash
         let result = await this.UserService.create(data)
         Email.AuthEmails({email:data.email},5)
-        return result
+        return {status:true,code:201,data:result}
     }
     async signin({email,password}){
         let result = await this.UserService.findByEmail(email)
@@ -25,9 +25,11 @@ export class AuthService {
     const payload = { sub: result._id, email:result.email };
     let user = new ResUser(result)
     return {
-      access_token: await this.jwtService.signAsync(payload),
-      user
-    };
+        status:true,code:201,data:{
+        access_token: await this.jwtService.signAsync(payload),
+        user
+      }
+    }
     }
     
 }

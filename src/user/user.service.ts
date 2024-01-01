@@ -12,7 +12,7 @@ export class UserService {
             let result = await this.userModel.find(query,{password:0})
             if(!result)
                 return new NotFoundException()
-            return result 
+            return {status:true,code:200,data:result} 
         } catch (error) {
             return new InternalServerErrorException(error)
         }
@@ -23,7 +23,7 @@ export class UserService {
             let result = await this.userModel.findOne({_id:id}).lean();
             if(!result)
                 return new NotFoundException()
-            return new UserObject(result)
+            return {status:true,code:200,data:new UserObject(result)} 
         } catch (error) {
             return new InternalServerErrorException(error)
         }
@@ -34,7 +34,7 @@ export class UserService {
             let result = await this.userModel.findOne({email:email}).lean();
             if(!result)
                 return new NotFoundException()
-            return result 
+            return {status:true,code:200,data:result}  
         } catch (error) {
             return new InternalServerErrorException(error)
         }
@@ -43,7 +43,7 @@ export class UserService {
     async  create(user: UserObject): Promise<any> {
         try {
             let result = await this.userModel.create(user);
-            return result;
+            return {status:true,code:200,data:result};
         } catch (error) {
             if(error.code ==11000)
                 return new UnprocessableEntityException("User with same credentials already exists")
@@ -55,7 +55,7 @@ export class UserService {
     async delete(id: string): Promise<any> {
         try {
             let result = await this.userModel.deleteOne({_id:id});
-            return result
+            return {status:true,code:200,data:result}
         } catch (error) {
             return new InternalServerErrorException(error)
         }
@@ -65,7 +65,7 @@ export class UserService {
         try {
             //this.logger.log(`Updating post with id: ${id}`);
             let updatedUser = await this.userModel.findOneAndUpdate({_id:id},data,{new:true});
-            return updatedUser  
+            return {status:true,code:200,data:updatedUser}  
         } catch (error) {
             return new InternalServerErrorException(error)
         }
@@ -116,7 +116,7 @@ export class UserService {
     
           Email.AuthEmails({email:data.email,otp},4);
     
-          return { message: 'Reset Password Otp Sent Successfully'};
+          return { status:true,code:200, message: 'Reset Password Otp Sent Successfully'};
         } else {
           return new NotFoundException('Not a Valid Email');
         }
@@ -140,7 +140,7 @@ export class UserService {
     
             await Email.AuthEmails({email:data.email,otp},3);
     
-            return { message: 'Forgot Password Otp Sent Successfully' };
+            return { status:true,code:200, message: 'Forgot Password Otp Sent Successfully' };
           } else {
             return new NotFoundException('Not a Valid Email');
           }
@@ -165,7 +165,6 @@ export class UserService {
             }
                     
             if(data.query_type == 'reset_password') {
-              console.log(res);
               if(!res?.otp?.reset_password) {
                 throw new NotFoundException('Reset Password Request is Not Valid!')
               }
@@ -193,7 +192,7 @@ export class UserService {
             delete res._id;
             const obj = await this.userModel.findByIdAndUpdate(id, res, { new: true });
             await Email.AuthEmails({ message, email:data.email }, 2);
-            return { message: message, data: obj };
+            return {status:true, code:200, message: message, data: obj };
           }
           
         } catch (error) {
@@ -224,7 +223,7 @@ export class UserService {
             );
           }
           
-          return updatedUser;
+          return {status:true,code:200,data:updatedUser};
         } catch (error) {
           return new InternalServerErrorException(error);
         }
