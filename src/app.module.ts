@@ -23,6 +23,7 @@ autoSchemaFile path for auto schema file.
       playground: true,
       csrfPrevention: false,
       autoSchemaFile: join(process.cwd(), 'src/graphQl/schema.gql'),
+      context:({req})=>({req}) // use context to access req obj in graph
     }),
     ConfigModule.forRoot({envFilePath: '.env.development',isGlobal:true}),
    DatabaseModule,
